@@ -3,13 +3,13 @@ jobs:
   do-the-thing:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - uses: actions/setup-python@v2
+      - uses: actions/setup-python@v5
         with:
           python-version: '3.x'
-      - uses: tj-actions/changed-files@v14.4
+      - uses: tj-actions/changed-files@v45
         id: changed-files
   
       - name: tests and coverage
@@ -30,9 +30,10 @@ jobs:
         run: |
           sudo apt-get install texlive texlive-latex-extra
           pdflatex -output-directory=out doc/math.tex
+          rm out/math.aux out/math.log out/math.out # remove unneeded .tex compilation files
 
       - name: deploy to pages
-        uses: peaceiris/actions-gh-pages@v3
+        uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: out
